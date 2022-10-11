@@ -4,6 +4,8 @@ from celery import Task
 
 from .worker import app
 
+# our worker has 2 tasks
+# 1) Load model and 2) Inference of model
 
 class PredictTask(Task):
     """

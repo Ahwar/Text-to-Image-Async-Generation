@@ -1,3 +1,5 @@
+# debug script for image generation without streamlit
+
 import requests
 from time import sleep
 
@@ -6,7 +8,6 @@ from PIL import Image
 import numpy as np
 
 test_body = {"user_input":"superman hitting spiderman"}
-
 
 def dummy_task(data, poll_interval=1, max_attempts=45):
     base_uri = r'http://127.0.0.1:8000'

@@ -11,13 +11,14 @@ torch.cuda.empty_cache()
 
 MODEL_PATH = os.environ['MODEL_PATH']
 
-
+# class and functions on how to load and run inferences on model
+# rename ChurnModel text_to_image_model
 class ChurnModel:
 
     """ Wrapper for loading and serving pre-trained model"""
 
     def __init__(self):
-        self.model_id = '/dev/stable-diffusion-v1-4/'
+        self.model_id = MODEL_PATH
         self.device = "cuda"
         self.model = self._load_model_from_path(self)
 
@@ -38,8 +39,9 @@ class ChurnModel:
     def predict(self, data, return_option='Prob'):
         # take user input from streamlit
         # generate 2 imagesk, duplicate text
-        d = data[0]["user_input"]
-        prompt = [str(d)] * 1
+        user_input = data[0]["user_input"]
+        no_of_images = data[0]["no_of_images"]
+        prompt = [str(user_input)] * no_of_images
         with autocast("cuda"):
             # guidance_scale parameter part of model
             images = self.model(
@@ -52,9 +54,7 @@ class ChurnModel:
                 allow_nsfw=True,
             ).images
 
-        
-        img = images[0]
-
-        predictions = json.dumps(np.array(img).tolist())
-        return predictions 
+        predictions = { idx: np.array(img).tolist() for idx, img in enumerate(images)}
+        predictions = json.dumps(predictions)
+        return predictions
 

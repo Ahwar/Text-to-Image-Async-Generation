@@ -3,10 +3,10 @@ Working example for serving a ML model using FastAPI and Celery.
 
 
 **Set environment variables:**
-* MODEL_PATH: Hugging face machine learning model
+* MODEL_PATH: Hugging face machine learning model (Online of Offline)
 
 ```bash
-export MODEL_PATH="CompVis/stable-diffusion-v1-4"
+export MODEL_PATH="/dev/stable-diffusion-v1-4/"
 ```
 
 ## Installing dependencies
@@ -43,4 +43,3 @@ celery -A celery_task_app.worker worker -l info
 ```
 streamlit run main.py
 ```
-

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-class Customer(BaseModel):
-    """ Features for customer prediction """
+class Client(BaseModel):
+    """ Features for image generation """
     user_input: str
     no_of_images: int
 
@@ -15,4 +15,4 @@ class Prediction(BaseModel):
     """ Prediction task result """
     task_id: str
     status: str
-    probability: str
+    result: str

@@ -12,8 +12,8 @@ torch.cuda.empty_cache()
 MODEL_PATH = os.environ['MODEL_PATH']
 
 # class and functions on how to load and run inferences on model
-# rename ChurnModel text_to_image_model
-class ChurnModel:
+# rename GenerationModel text_to_image_model
+class GenerationModel:
 
     """ Wrapper for loading and serving pre-trained model"""
 
@@ -54,7 +54,7 @@ class ChurnModel:
                 allow_nsfw=True,
             ).images
 
-        predictions = { idx: np.array(img).tolist() for idx, img in enumerate(images)}
-        predictions = json.dumps(predictions)
-        return predictions
+        results = { idx: np.array(img).tolist() for idx, img in enumerate(images)}
+        results = json.dumps(results)
+        return results
 

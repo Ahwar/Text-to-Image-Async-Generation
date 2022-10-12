@@ -36,9 +36,9 @@ class PredictTask(Task):
           
           bind=True,
           base=PredictTask,
-          path=('celery_task_app.ml.model', 'ChurnModel'),
+          path=('celery_task_app.ml.model', 'GenerationModel'),
           name='{}.{}'.format(__name__, 'Churn'))
-def predict_churn_single(self, data):
+def generate_image_single(self, data):
     """
     Essentially the run method of PredictTask
     """

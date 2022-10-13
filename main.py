@@ -25,7 +25,13 @@ def get_results(poll_interval=1, max_attempts=45):
 
 # take user input from streamlit 
 user_input = st.text_input("enter text to generate image")
-post_data = {"user_input": str(user_input), "no_of_images": 9}
+
+img_no= st.radio(
+    "how many images to generate ?",
+    ('3', '6', '9'))
+img_no = int(img_no)
+
+post_data = {"user_input": str(user_input), "no_of_images": img_no}
 
 # when input is entered
 if st.button("Generate"):
@@ -49,18 +55,19 @@ if st.button("Generate"):
             st.image(Image.fromarray(np.array(result["0"], dtype="uint8")))
             st.image(Image.fromarray(np.array(result["1"], dtype="uint8")))
             st.image(Image.fromarray(np.array(result["2"], dtype="uint8")))
+        if img_no ==6:
+            # column two
+            with col2:
+                st.image(Image.fromarray(np.array(result["3"], dtype="uint8")))
+                st.image(Image.fromarray(np.array(result["4"], dtype="uint8")))
+                st.image(Image.fromarray(np.array(result["5"], dtype="uint8")))
 
-        # column two
-        with col2:
-            st.image(Image.fromarray(np.array(result["3"], dtype="uint8")))
-            st.image(Image.fromarray(np.array(result["4"], dtype="uint8")))
-            st.image(Image.fromarray(np.array(result["5"], dtype="uint8")))
-
-        # # column three
-        with col3:
-            st.image(Image.fromarray(np.array(result["6"], dtype="uint8")))
-            st.image(Image.fromarray(np.array(result["7"], dtype="uint8")))
-            st.image(Image.fromarray(np.array(result["8"], dtype="uint8")))
+        if img_no ==9:
+            # # # column three
+            with col3:
+                st.image(Image.fromarray(np.array(result["6"], dtype="uint8")))
+                st.image(Image.fromarray(np.array(result["7"], dtype="uint8")))
+                st.image(Image.fromarray(np.array(result["8"], dtype="uint8")))
 
     else:
         st.text("an error occured, please send request again")

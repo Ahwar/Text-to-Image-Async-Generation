@@ -42,12 +42,12 @@ with the path above
 **start celery server**
 
 ```
-celery -A celery_task_app.worker worker -l info
+celery -A celery_task_app.worker worker -l info --concurrency 1
 ```  
 
 (Optional) To automaticaly reload celery after making changes in celery use this command instead of above (previosuly make changes, need to manually to restart celery service)
 ```
-watchmedo auto-restart --directory=celery_task_app/ --pattern=*.py --recursive -- celery -A celery_task_app.worker worker -l info 
+watchmedo auto-restart --directory=celery_task_app/ --pattern=*.py --recursive -- celery -A celery_task_app.worker worker -l info --concurrency 1
 ```
 
 

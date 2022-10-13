@@ -5,12 +5,13 @@ Working example for serving a ML model using FastAPI and Celery.
 ```
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
-watchmedo auto-restart --directory=celery_task_app/ --pattern=*.py --recursive -- celery -A celery_task_app.worker worker -l info 
 
+## Running broker and Backend (to check status -> sudo docker ps)
+### Instead of installing rabbitmq and redis, can run a docker container which includes them (no need to install everytime)
+### Offical docker containers from rabbitmq and redis to start their servers
 
-## Running broker and Backend
 **start rabbitmq (broker)**  
 `docker run -d -p 5672:5672 rabbitmq`  
 
@@ -44,8 +45,14 @@ with the path above
 celery -A celery_task_app.worker worker -l info
 ```  
 
+(Optional) To automaticaly reload celery after making changes in celery use this command instead of above (previosuly make changes, need to manually to restart celery service)
+```
+watchmedo auto-restart --directory=celery_task_app/ --pattern=*.py --recursive -- celery -A celery_task_app.worker worker -l info 
+```
+
+
 **start uvicorn api server**  
-in new terminal  
+run in new terminal  
 ```
 uvicorn --reload app:app
 ```

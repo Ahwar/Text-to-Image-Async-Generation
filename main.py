@@ -28,7 +28,7 @@ user_input = st.text_input("enter text to generate image")
 post_data = {"user_input": str(user_input), "no_of_images": 9}
 
 # when input is entered
-if user_input:
+if st.button("Generate"):
     
     base_uri = r"http://127.0.0.1:8000"
     predict_task_uri = base_uri + "/image-generation"

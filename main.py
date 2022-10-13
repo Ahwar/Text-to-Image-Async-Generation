@@ -36,14 +36,18 @@ post_data = {"user_input": str(user_input), "no_of_images": img_no}
 # when input is entered
 if st.button("Generate"):
     
+    # streamlit deafult uri
     base_uri = r"http://127.0.0.1:8000"
+    # routes to image generation path
     predict_task_uri = base_uri + "/image-generation"
     # message that model is loading
     st.text("generating image from text:\t" + str(post_data["user_input"]))
+    # getting taskid and displaying
     task = requests.post(predict_task_uri, json=post_data)
     task_id = task.json()["task_id"]
     st.text("result request sent with request_id: " + task_id)
 
+    # polling function to get results (2 seconds between every requests -  to get the results, 44 - how many times to ask for results)
     result = get_results(2, 44)
 
     if result != None:

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+# all the objects used in the deployment process
 class Client(BaseModel):
     """ Features for image generation """
     user_input: str

@@ -4,7 +4,7 @@ from celery import Celery
 # * BACKEND_URI: Celery backend e.g. Redis
 
 # Celery Worker
-BROKER_URI = "amqp://localhost" #amqp is broker server
+BROKER_URI = "amqp://localhost" #rabbitmq is broker server
 BACKEND_URI = "redis://localhost"
 
 # app object of Celery class used to locate path of worker and broker

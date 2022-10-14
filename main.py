@@ -59,14 +59,16 @@ if st.button("Generate"):
             st.image(Image.fromarray(np.array(result["0"], dtype="uint8")))
             st.image(Image.fromarray(np.array(result["1"], dtype="uint8")))
             st.image(Image.fromarray(np.array(result["2"], dtype="uint8")))
-        if img_no ==6:
+        
+
+        if img_no >= 6:
             # column two
             with col2:
                 st.image(Image.fromarray(np.array(result["3"], dtype="uint8")))
                 st.image(Image.fromarray(np.array(result["4"], dtype="uint8")))
                 st.image(Image.fromarray(np.array(result["5"], dtype="uint8")))
 
-        if img_no ==9:
+        if img_no > 6:
             # # # column three
             with col3:
                 st.image(Image.fromarray(np.array(result["6"], dtype="uint8")))

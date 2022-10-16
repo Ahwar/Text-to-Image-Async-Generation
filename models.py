@@ -2,8 +2,9 @@ from pydantic import BaseModel
 # all the objects used in the deployment process
 class Client(BaseModel):
     """ Features for image generation """
-    user_input: str
-    no_of_images: int
+    prompt: str
+    image: str
+    mask_image: str
 
 
 class Task(BaseModel):

@@ -22,13 +22,14 @@ pip3 install -r requirements.txt
 * MODEL_PATH: Hugging face machine learning model (Online of Offline)
 
 ```bash
-export MODEL_PATH="/dev/stable-diffusion-v1-4/"
+export MODEL_PATH="/home/ec2-user/stable-diffusion-v1-4/"
 ```
 this model path is for the model downloaded in below section, if you want to use model from huggingface github replace it with `CompVis/stable-diffusion-v1-4`
 ## Optional: Downlaod model  
 Note: If you don't want to use the token, you can also simply download the model weights (after having accepted the license) and pass the path to the local folder to the StableDiffusionPipeline.
 
 ```bash
+# lfs will download all the model files
 git lfs install
 git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
 ```

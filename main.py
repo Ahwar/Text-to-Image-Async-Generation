@@ -7,6 +7,21 @@ import json
 from PIL import Image
 import numpy as np
 
+from io import BytesIO
+
+
+def download_as_json(url):
+    response = requests.get(url)
+    if response.status_code != 404:
+        img = (
+            Image.open(BytesIO(response.content))
+            .convert("RGB")
+            .resize((512, 512), Image.ADAPTIVE)
+        )
+        return json.dumps(np.array(img).tolist())
+    else:
+        return None
+
 
 def get_results(poll_interval=1, max_attempts=45):
 
@@ -23,57 +38,51 @@ def get_results(poll_interval=1, max_attempts=45):
         sleep(poll_interval)
     return result
 
-# take user input from streamlit 
-user_input = st.text_input("enter text to generate image")
 
-img_no= st.radio(
-    "how many images to generate ?",
-    ('3', '6', '9'))
-img_no = int(img_no)
+# take user input from streamlit
+prompt = st.text_input("enter text prompt to generate image")
+# take user input from streamlit
+image_url = st.text_input("enter input image URL")
 
-post_data = {"user_input": str(user_input), "no_of_images": img_no}
+
 
 # when input is entered
 if st.button("Generate"):
-    
-    # streamlit deafult uri
-    base_uri = r"http://127.0.0.1:8000"
-    # routes to image generation path
-    predict_task_uri = base_uri + "/image-generation"
-    # message that model is loading
-    st.text("generating image from text:\t" + str(post_data["user_input"]))
-    # getting taskid and displaying
-    task = requests.post(predict_task_uri, json=post_data)
-    task_id = task.json()["task_id"]
-    st.text("result request sent with request_id: " + task_id)
+    # download image and convert to json
+    init_image = download_as_json(image_url)
+    post_data = {
+        "prompt": str(prompt),
+        "image": init_image,
+    }
 
-    # polling function to get results (2 seconds between every requests -  to get the results, 44 - how many times to ask for results)
-    result = get_results(2, 44)
-
-    if result != None:
-        result = json.loads(result)
-        # CONVERT TO COLUMNS
-        col1, col2, col3 = st.columns(3)
-        # column one
-        with col1:
-            st.image(Image.fromarray(np.array(result["0"], dtype="uint8")))
-            st.image(Image.fromarray(np.array(result["1"], dtype="uint8")))
-            st.image(Image.fromarray(np.array(result["2"], dtype="uint8")))
-        
-
-        if img_no >= 6:
-            # column two
-            with col2:
-                st.image(Image.fromarray(np.array(result["3"], dtype="uint8")))
-                st.image(Image.fromarray(np.array(result["4"], dtype="uint8")))
-                st.image(Image.fromarray(np.array(result["5"], dtype="uint8")))
-
-        if img_no > 6:
-            # # # column three
-            with col3:
-                st.image(Image.fromarray(np.array(result["6"], dtype="uint8")))
-                st.image(Image.fromarray(np.array(result["7"], dtype="uint8")))
-                st.image(Image.fromarray(np.array(result["8"], dtype="uint8")))
-
+    if init_image == None:
+        st.text("The URL you provide does not have any image, Please check URL")
     else:
-        st.text("an error occured, please send request again")
+        # streamlit deafult uri
+        base_uri = r"http://127.0.0.1:8000"
+        # routes to image generation path
+        predict_task_uri = base_uri + "/image-generation"
+        # message that model is loading
+        st.text("generating image from text:\t" + str(post_data["prompt"]))
+
+        # print("generating image from text:\t" + str(post_data["image"]))
+        # getting taskid and displaying
+        task = requests.post(predict_task_uri, json=post_data)
+        st.text("Your input sample image")
+        st.image(
+            Image.fromarray(np.array(json.loads(post_data["image"]), dtype="uint8"))
+        )
+        task_id = task.json()["task_id"]
+        st.text("result request sent with request_id: " + task_id)
+        st.text("Your image is being generated")
+
+        # polling function to get results (2 seconds between every requests -
+        # to get the results, 44 - how many times to ask for results)
+        result = get_results(2, 44)
+
+        if result != None:
+            # result = json.loads(result)
+            st.image(Image.fromarray(np.array(json.loads(result), dtype="uint8")))
+
+        else:
+            st.text("an error occured, please send request again")

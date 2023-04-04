@@ -8,6 +8,8 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
+Note: you can replace `requirements.txt` with `requirements-freezed.txt` If you want to install all libraries with the specific version we used at the time of development.
+
 ## Running broker and Backend (to check status -> sudo docker ps)
 ### Instead of installing rabbitmq and redis, can run a docker container which includes them (no need to install everytime)
 ### Offical docker containers from rabbitmq and redis to start their servers

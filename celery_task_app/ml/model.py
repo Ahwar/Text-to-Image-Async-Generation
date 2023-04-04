@@ -27,10 +27,8 @@ class GenerationModel:
         # load the model using Stable Diffusion Pipeline  
         pipe = StableDiffusionPipeline.from_pretrained(
             self.model_id,
-            revision="fp16",
             torch_dtype=torch.float16,
             use_auth_token=True,
-            allow_nsfw=True,
         )
         pipe.enable_attention_slicing()
         pipe = pipe.to(self.device)
@@ -48,10 +46,7 @@ class GenerationModel:
                 prompt,
                 height=512,
                 width=512,
-                guidance_scale=7.5,
-                revision="fp16",
-                torch_dtype=torch.float16,
-                allow_nsfw=True,
+                guidance_scale=7.5
             ).images
 
         results = { idx: np.array(img).tolist() for idx, img in enumerate(images)}
